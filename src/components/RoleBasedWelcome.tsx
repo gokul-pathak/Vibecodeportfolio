@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Briefcase, Code, Palette, User, Terminal } from 'lucide-react';
+import { Briefcase, Code, Palette, User, Terminal, Database } from 'lucide-react';
 import { UserRole } from './RoleSelector';
 
 interface RoleBasedWelcomeProps {
@@ -57,6 +57,18 @@ export function RoleBasedWelcome({ role }: RoleBasedWelcomeProps) {
         'System architecture & scaling',
       ],
       color: 'from-green-600 to-teal-600',
+    },
+    backend: {
+      icon: <Database className="w-8 h-8 text-red-400" />,
+      title: 'Welcome, Backend Engineer!',
+      subtitle: 'Query and explore my portfolio through an interactive SQL database interface',
+      features: [
+        'Database schema & design patterns',
+        'Server-side architecture & APIs',
+        'Performance optimization & scaling',
+        'SQL queries & data modeling',
+      ],
+      color: 'from-red-600 to-orange-600',
     },
     visitor: {
       icon: <User className="w-8 h-8 text-cyan-400" />,

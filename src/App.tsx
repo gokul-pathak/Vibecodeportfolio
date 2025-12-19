@@ -4,6 +4,7 @@ import { RoleIndicator } from './components/RoleIndicator';
 import { RoleBasedWelcome } from './components/RoleBasedWelcome';
 import { NepalTheme } from './components/NepalTheme';
 import { DevOpsConsole } from './components/DevOpsConsole';
+import { BackendDatabase } from './components/BackendDatabase';
 import { ParticleField } from './components/ParticleField';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgress } from './components/ScrollProgress';
@@ -58,6 +59,7 @@ export default function App() {
       showTestimonials: true,
       showVisitorActions: false,
       showDevOpsConsole: false,
+      showBackendDatabase: false,
     },
     developer: {
       showHiringBanner: false,
@@ -73,6 +75,7 @@ export default function App() {
       showTestimonials: true,
       showVisitorActions: true,
       showDevOpsConsole: false,
+      showBackendDatabase: false,
     },
     designer: {
       showHiringBanner: false,
@@ -88,6 +91,7 @@ export default function App() {
       showTestimonials: true,
       showVisitorActions: true,
       showDevOpsConsole: false,
+      showBackendDatabase: false,
     },
     devops: {
       showHiringBanner: false,
@@ -103,6 +107,23 @@ export default function App() {
       showTestimonials: false,
       showVisitorActions: false,
       showDevOpsConsole: true,
+      showBackendDatabase: false,
+    },
+    backend: {
+      showHiringBanner: false,
+      showAvailabilityStatus: true,
+      showCompanySlider: false,
+      showAbout: false,
+      showQuickStats: false,
+      showInteractiveSkills: false,
+      showProjects: false,
+      showInteractiveTimeline: false,
+      showWhyHireMe: false,
+      showBlog: false,
+      showTestimonials: false,
+      showVisitorActions: false,
+      showDevOpsConsole: false,
+      showBackendDatabase: true,
     },
     visitor: {
       showHiringBanner: false,
@@ -118,6 +139,7 @@ export default function App() {
       showTestimonials: true,
       showVisitorActions: true,
       showDevOpsConsole: false,
+      showBackendDatabase: false,
     },
   };
 
@@ -151,6 +173,7 @@ export default function App() {
       <AIChatbot />
       <EasterEggs />
       {config.showDevOpsConsole && <DevOpsConsole />}
+      {config.showBackendDatabase && <BackendDatabase />}
     </div>
   );
 }

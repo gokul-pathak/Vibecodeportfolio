@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
-import { Briefcase, User, Code, Palette, Terminal } from 'lucide-react';
+import { Briefcase, User, Code, Palette, Terminal, Database } from 'lucide-react';
 
-export type UserRole = 'hiring-manager' | 'visitor' | 'developer' | 'designer' | 'devops' | null;
+export type UserRole = 'hiring-manager' | 'visitor' | 'developer' | 'designer' | 'devops' | 'backend' | null;
 
 interface RoleSelectorProps {
   onSelectRole: (role: UserRole) => void;
@@ -83,6 +83,13 @@ export function RoleSelector({ onSelectRole }: RoleSelectorProps) {
       role: 'devops' as UserRole,
     },
     {
+      icon: <Database className="w-12 h-12 text-red-400" />,
+      title: 'Backend Engineer',
+      description: 'Discover backend projects, database design, server-side logic, and API development',
+      color: 'from-red-600/30 to-orange-600/30',
+      role: 'backend' as UserRole,
+    },
+    {
       icon: <User className="w-12 h-12 text-cyan-400" />,
       title: 'Visitor',
       description: 'Browse general portfolio, blog posts, and get to know me better',
@@ -92,7 +99,7 @@ export function RoleSelector({ onSelectRole }: RoleSelectorProps) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950 overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNi02LTIuNjg2LTYtNiAyLjY4Ni02IDYtNiIgc3Ryb2tlPSJyZ2JhKDEyNywgMCwgMjU1LCAwLjA1KSIvPjwvZz48L3N2Zz4=')] opacity-20" />
       
@@ -100,33 +107,33 @@ export function RoleSelector({ onSelectRole }: RoleSelectorProps) {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full max-h-screen overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 py-4"
         >
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
-            className="inline-block mb-6"
+            className="inline-block mb-4"
           >
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center mx-auto">
-              <span className="text-4xl">👋</span>
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center mx-auto">
+              <span className="text-3xl">👋</span>
             </div>
           </motion.div>
 
-          <h1 className="text-5xl md:text-6xl text-white mb-4">
+          <h1 className="text-4xl md:text-5xl text-white mb-3">
             Welcome!
           </h1>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+          <p className="text-lg text-slate-400 max-w-2xl mx-auto px-4">
             I'm a designer & frontend developer. Choose your role to see a personalized portfolio experience
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto mb-6">
           {roles.map((role, index) => (
             <RoleCard
               key={role.role}
@@ -141,7 +148,7 @@ export function RoleSelector({ onSelectRole }: RoleSelectorProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="text-center mt-8"
+          className="text-center pb-6"
         >
           <button
             onClick={() => onSelectRole('visitor')}
