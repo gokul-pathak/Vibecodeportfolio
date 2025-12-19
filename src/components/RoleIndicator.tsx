@@ -55,22 +55,22 @@ export function RoleIndicator({ role, onChangeRole }: RoleIndicatorProps) {
     <motion.div
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="fixed top-20 sm:top-24 right-2 sm:right-4 z-40"
+      transition={{ delay: 0.5, duration: 0.5 }}
+      className="fixed top-1/2 -translate-y-1/2 right-4 sm:right-6 z-50"
     >
       <div className="flex items-center gap-2">
-        <div className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r ${config.bgColor} backdrop-blur-xl border border-white/20 shadow-lg`}>
+        <div className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full bg-gradient-to-r ${config.bgColor} backdrop-blur-xl border border-white/20 shadow-xl`}>
           <div className={`text-transparent bg-clip-text bg-gradient-to-r ${config.color}`}>
             {config.icon}
           </div>
-          <span className="text-xs sm:text-sm text-white hidden sm:inline">{config.label} View</span>
-          <span className="text-xs text-white sm:hidden">{config.label}</span>
+          <span className="text-xs sm:text-sm text-white">{config.label} View</span>
         </div>
 
         <motion.button
           whileHover={{ scale: 1.1, rotate: 180 }}
           whileTap={{ scale: 0.9 }}
           onClick={onChangeRole}
-          className="p-2 rounded-full bg-slate-900/80 backdrop-blur-xl border border-white/10 hover:border-white/30 transition-all"
+          className="p-2.5 rounded-full bg-slate-900/80 backdrop-blur-xl border border-white/10 hover:border-white/30 transition-all shadow-xl"
           title="Change role"
         >
           <RefreshCw className="w-4 h-4 text-white" />

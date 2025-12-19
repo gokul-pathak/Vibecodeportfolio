@@ -30,6 +30,7 @@ import { EasterEggs } from './components/EasterEggs';
 
 export default function App() {
   const [userRole, setUserRole] = useState<UserRole>(null);
+  const [isHiringBannerDismissed, setIsHiringBannerDismissed] = useState(false);
 
   const handleRoleSelect = (role: UserRole) => {
     setUserRole(role);
@@ -153,8 +154,10 @@ export default function App() {
       <CustomCursor />
       <ScrollProgress />
       <Navigation />
-      {config.showHiringBanner && <HiringBanner />}
-      <FestivalBanner showHiringBanner={config.showHiringBanner} />
+      {config.showHiringBanner && !isHiringBannerDismissed && (
+        <HiringBanner onDismiss={() => setIsHiringBannerDismissed(true)} />
+      )}
+      <FestivalBanner showHiringBanner={config.showHiringBanner && !isHiringBannerDismissed} />
       <RoleIndicator role={userRole} onChangeRole={handleChangeRole} />
       
       <Hero />

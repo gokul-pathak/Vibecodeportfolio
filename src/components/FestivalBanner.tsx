@@ -128,28 +128,24 @@ export function FestivalBanner({ showHiringBanner = false }: FestivalBannerProps
 
   const checkActiveFestivals = () => {
     const now = new Date();
-    const currentMonth = now.getMonth() + 1; // JavaScript months are 0-indexed
+    const currentMonth = now.getMonth() + 1;
     const currentDay = now.getDate();
 
     const active = festivals.filter(festival => {
       const { startDate, endDate } = festival;
 
-      // Handle year-crossing festivals (like New Year)
       if (startDate.month > endDate.month) {
-        // Festival crosses year boundary
         return (
           (currentMonth === startDate.month && currentDay >= startDate.day) ||
           (currentMonth === endDate.month && currentDay <= endDate.day)
         );
       } else if (startDate.month === endDate.month) {
-        // Festival within same month
         return (
           currentMonth === startDate.month &&
           currentDay >= startDate.day &&
           currentDay <= endDate.day
         );
       } else {
-        // Festival spans multiple months
         return (
           (currentMonth === startDate.month && currentDay >= startDate.day) ||
           (currentMonth === endDate.month && currentDay <= endDate.day) ||
@@ -172,14 +168,20 @@ export function FestivalBanner({ showHiringBanner = false }: FestivalBannerProps
   if (visibleFestivals.length === 0) return null;
 
   return (
-    <div 
-      className="fixed left-0 right-0 z-40 px-4 sm:px-6 lg:px-8 pointer-events-none transition-all duration-500 ease-in-out"
-      style={{
-        top: showHiringBanner ? '140px' : '80px'
+    <motion.div
+      className="fixed left-0 right-0 z-40 px-4 sm:px-6 lg:px-8 pointer-events-none"
+      animate={{
+        top: showHiringBanner ? 140 : 80
+      }}
+      transition={{ 
+        type: 'spring',
+        damping: 30,
+        stiffness: 400,
+        duration: 0.4
       }}
     >
-      <div className="max-w-7xl mx-auto">
-        <AnimatePresence mode="popLayout">
+      <div className="max-w-7xl mx-auto space-y-3">
+        <AnimatePresence mode="sync">
           {visibleFestivals.map((festival, index) => {
             const Icon = festival.icon;
             
@@ -187,29 +189,24 @@ export function FestivalBanner({ showHiringBanner = false }: FestivalBannerProps
               <motion.div
                 key={festival.id}
                 layout
-                initial={{ y: -100, opacity: 0, scale: 0.8 }}
-                animate={{ y: 0, opacity: 1, scale: 1 }}
-                exit={{ x: 100, opacity: 0, scale: 0.8 }}
+                initial={{ opacity: 0, y: -50, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, x: 100, scale: 0.8 }}
                 transition={{ 
-                  type: 'spring', 
-                  damping: 25, 
-                  stiffness: 300,
-                  delay: index * 0.05,
-                  layout: {
-                    duration: 0.3
-                  }
+                  layout: { type: 'spring', damping: 30, stiffness: 400 },
+                  opacity: { duration: 0.2 },
+                  y: { type: 'spring', damping: 25, stiffness: 300 },
+                  delay: index * 0.05
                 }}
-                className="pointer-events-auto mb-3"
+                className="pointer-events-auto"
               >
                 <div
                   className={`relative overflow-hidden rounded-2xl border backdrop-blur-xl shadow-2xl ${festival.accentColor}`}
                 >
-                  {/* Animated gradient background */}
                   <div
                     className={`absolute inset-0 bg-gradient-to-r ${festival.gradient} opacity-10 animate-pulse`}
                   />
 
-                  {/* Sparkles animation */}
                   <div className="absolute inset-0 overflow-hidden">
                     {[...Array(15)].map((_, i) => (
                       <motion.div
@@ -233,10 +230,8 @@ export function FestivalBanner({ showHiringBanner = false }: FestivalBannerProps
                     ))}
                   </div>
 
-                  {/* Content */}
                   <div className="relative px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 flex-1 min-w-0">
-                      {/* Icon */}
                       <motion.div
                         animate={{
                           rotate: [0, 10, -10, 0],
@@ -254,7 +249,6 @@ export function FestivalBanner({ showHiringBanner = false }: FestivalBannerProps
                         </div>
                       </motion.div>
 
-                      {/* Message */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <Icon className="w-3.5 h-3.5 text-white flex-shrink-0" />
@@ -268,7 +262,6 @@ export function FestivalBanner({ showHiringBanner = false }: FestivalBannerProps
                       </div>
                     </div>
 
-                    {/* Dismiss button */}
                     <button
                       onClick={() => handleDismiss(festival.id)}
                       className="flex-shrink-0 p-2 hover:bg-white/10 rounded-full transition-colors"
@@ -278,7 +271,6 @@ export function FestivalBanner({ showHiringBanner = false }: FestivalBannerProps
                     </button>
                   </div>
 
-                  {/* Bottom border animation */}
                   <motion.div
                     className={`h-0.5 bg-gradient-to-r ${festival.gradient}`}
                     initial={{ scaleX: 0 }}
@@ -292,6 +284,6 @@ export function FestivalBanner({ showHiringBanner = false }: FestivalBannerProps
           })}
         </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 }

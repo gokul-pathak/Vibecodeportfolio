@@ -45,11 +45,11 @@ export function FloatingActions() {
       </AnimatePresence>
 
       {/* Floating Action Menu */}
-      <div className="fixed bottom-8 left-8 z-40">
+      <div className="fixed bottom-8 left-8 z-50">
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              className="absolute bottom-20 left-0 flex flex-col gap-4"
+              className="absolute bottom-20 left-0 flex flex-col gap-4 z-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

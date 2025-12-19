@@ -2,16 +2,18 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Briefcase, Download, Calendar, X, Clock, MapPin, DollarSign } from 'lucide-react';
 
-export function HiringBanner() {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isDismissed, setIsDismissed] = useState(false);
+interface HiringBannerProps {
+  onDismiss?: () => void;
+}
 
-  if (isDismissed) return null;
+export function HiringBanner({ onDismiss }: HiringBannerProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <motion.div
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -100, opacity: 0 }}
       transition={{ delay: 1.2, duration: 0.5 }}
       className="fixed top-[72px] left-0 right-0 z-50 pointer-events-none px-4"
     >
@@ -89,7 +91,7 @@ export function HiringBanner() {
                 <motion.button
                   whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}
-                  onClick={() => setIsDismissed(true)}
+                  onClick={() => onDismiss?.()}
                   className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                 >
                   <X className="w-4 h-4 text-white" />
