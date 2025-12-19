@@ -1,29 +1,30 @@
 import { useState } from 'react';
-import { Navigation } from './components/Navigation';
-import { Hero } from './components/Hero';
-import { CompanySlider } from './components/CompanySlider';
-import { About } from './components/About';
-import { Projects } from './components/Projects';
-import { Blog } from './components/Blog';
-import { Testimonials } from './components/Testimonials';
-import { Contact } from './components/Contact';
-import { FloatingActions } from './components/FloatingActions';
-import { AIChatbot } from './components/AIChatbot';
-import { InteractiveSkills } from './components/InteractiveSkills';
-import { InteractiveTimeline } from './components/InteractiveTimeline';
-import { EasterEggs } from './components/EasterEggs';
-import { CustomCursor } from './components/CustomCursor';
-import { ScrollProgress } from './components/ScrollProgress';
-import { ParticleField } from './components/ParticleField';
-import { HiringBanner } from './components/HiringBanner';
-import { QuickStats } from './components/QuickStats';
-import { WhyHireMe } from './components/WhyHireMe';
-import { AvailabilityStatus } from './components/AvailabilityStatus';
-import { VisitorActions } from './components/VisitorActions';
 import { RoleSelector, UserRole } from './components/RoleSelector';
 import { RoleIndicator } from './components/RoleIndicator';
 import { RoleBasedWelcome } from './components/RoleBasedWelcome';
 import { NepalTheme } from './components/NepalTheme';
+import { DevOpsConsole } from './components/DevOpsConsole';
+import { ParticleField } from './components/ParticleField';
+import { CustomCursor } from './components/CustomCursor';
+import { ScrollProgress } from './components/ScrollProgress';
+import { Navigation } from './components/Navigation';
+import { HiringBanner } from './components/HiringBanner';
+import { Hero } from './components/Hero';
+import { AvailabilityStatus } from './components/AvailabilityStatus';
+import { CompanySlider } from './components/CompanySlider';
+import { About } from './components/About';
+import { QuickStats } from './components/QuickStats';
+import { InteractiveSkills } from './components/InteractiveSkills';
+import { Projects } from './components/Projects';
+import { InteractiveTimeline } from './components/InteractiveTimeline';
+import { WhyHireMe } from './components/WhyHireMe';
+import { Blog } from './components/Blog';
+import { Testimonials } from './components/Testimonials';
+import { VisitorActions } from './components/VisitorActions';
+import { Contact } from './components/Contact';
+import { FloatingActions } from './components/FloatingActions';
+import { AIChatbot } from './components/AIChatbot';
+import { EasterEggs } from './components/EasterEggs';
 
 export default function App() {
   const [userRole, setUserRole] = useState<UserRole>(null);
@@ -56,6 +57,7 @@ export default function App() {
       showBlog: false,
       showTestimonials: true,
       showVisitorActions: false,
+      showDevOpsConsole: false,
     },
     developer: {
       showHiringBanner: false,
@@ -70,6 +72,7 @@ export default function App() {
       showBlog: true,
       showTestimonials: true,
       showVisitorActions: true,
+      showDevOpsConsole: false,
     },
     designer: {
       showHiringBanner: false,
@@ -84,6 +87,22 @@ export default function App() {
       showBlog: true,
       showTestimonials: true,
       showVisitorActions: true,
+      showDevOpsConsole: false,
+    },
+    devops: {
+      showHiringBanner: false,
+      showAvailabilityStatus: false,
+      showCompanySlider: false,
+      showAbout: false,
+      showQuickStats: false,
+      showInteractiveSkills: false,
+      showProjects: false,
+      showInteractiveTimeline: false,
+      showWhyHireMe: false,
+      showBlog: false,
+      showTestimonials: false,
+      showVisitorActions: false,
+      showDevOpsConsole: true,
     },
     visitor: {
       showHiringBanner: false,
@@ -98,6 +117,7 @@ export default function App() {
       showBlog: true,
       showTestimonials: true,
       showVisitorActions: true,
+      showDevOpsConsole: false,
     },
   };
 
@@ -130,6 +150,7 @@ export default function App() {
       <FloatingActions />
       <AIChatbot />
       <EasterEggs />
+      {config.showDevOpsConsole && <DevOpsConsole />}
     </div>
   );
 }

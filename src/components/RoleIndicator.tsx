@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Briefcase, User, Code, Palette, RefreshCw } from 'lucide-react';
+import { Briefcase, User, Code, Palette, Terminal, RefreshCw } from 'lucide-react';
 import { UserRole } from './RoleSelector';
 
 interface RoleIndicatorProps {
@@ -28,6 +28,12 @@ export function RoleIndicator({ role, onChangeRole }: RoleIndicatorProps) {
       label: 'Designer',
       color: 'from-pink-600 to-rose-600',
       bgColor: 'from-pink-600/20 to-rose-600/20',
+    },
+    devops: {
+      icon: <Terminal className="w-4 h-4" />,
+      label: 'DevOps',
+      color: 'from-green-600 to-teal-600',
+      bgColor: 'from-green-600/20 to-teal-600/20',
     },
     visitor: {
       icon: <User className="w-4 h-4" />,

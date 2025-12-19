@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Briefcase, Code, Palette, User } from 'lucide-react';
+import { Briefcase, Code, Palette, User, Terminal } from 'lucide-react';
 import { UserRole } from './RoleSelector';
 
 interface RoleBasedWelcomeProps {
@@ -45,6 +45,18 @@ export function RoleBasedWelcome({ role }: RoleBasedWelcomeProps) {
         'Visual inspiration & references',
       ],
       color: 'from-pink-600 to-rose-600',
+    },
+    devops: {
+      icon: <Terminal className="w-8 h-8 text-green-400" />,
+      title: 'Welcome, DevOps Engineer!',
+      subtitle: 'Dive into infrastructure, automation, deployment pipelines, and system architecture',
+      features: [
+        'Infrastructure as Code & automation',
+        'CI/CD pipelines & deployments',
+        'Container orchestration & monitoring',
+        'System architecture & scaling',
+      ],
+      color: 'from-green-600 to-teal-600',
     },
     visitor: {
       icon: <User className="w-8 h-8 text-cyan-400" />,

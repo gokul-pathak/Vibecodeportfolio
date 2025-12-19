@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
-import { Briefcase, User, Code, Palette } from 'lucide-react';
+import { Briefcase, User, Code, Palette, Terminal } from 'lucide-react';
 
-export type UserRole = 'hiring-manager' | 'visitor' | 'developer' | 'designer' | null;
+export type UserRole = 'hiring-manager' | 'visitor' | 'developer' | 'designer' | 'devops' | null;
 
 interface RoleSelectorProps {
   onSelectRole: (role: UserRole) => void;
@@ -74,6 +74,13 @@ export function RoleSelector({ onSelectRole }: RoleSelectorProps) {
       description: 'Discover design portfolio, creative process, design systems, and visual work',
       color: 'from-pink-600/30 to-rose-600/30',
       role: 'designer' as UserRole,
+    },
+    {
+      icon: <Terminal className="w-12 h-12 text-green-400" />,
+      title: 'DevOps Engineer',
+      description: 'Explore infrastructure automation, CI/CD pipelines, container orchestration, and system architecture',
+      color: 'from-green-600/30 to-teal-600/30',
+      role: 'devops' as UserRole,
     },
     {
       icon: <User className="w-12 h-12 text-cyan-400" />,
