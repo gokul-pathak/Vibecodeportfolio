@@ -14,6 +14,11 @@ import { EasterEggs } from './components/EasterEggs';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgress } from './components/ScrollProgress';
 import { ParticleField } from './components/ParticleField';
+import { HiringBanner } from './components/HiringBanner';
+import { QuickStats } from './components/QuickStats';
+import { WhyHireMe } from './components/WhyHireMe';
+import { AvailabilityStatus } from './components/AvailabilityStatus';
+import { VisitorActions } from './components/VisitorActions';
 
 export default function App() {
   return (
@@ -22,14 +27,19 @@ export default function App() {
       <CustomCursor />
       <ScrollProgress />
       <Navigation />
+      <HiringBanner />
       <Hero />
+      <AvailabilityStatus />
       <CompanySlider />
       <About />
+      <QuickStats />
       <InteractiveSkills />
       <Projects />
       <InteractiveTimeline />
+      <WhyHireMe />
       <Blog />
       <Testimonials />
+      <VisitorActions />
       <Contact />
       <FloatingActions />
       <AIChatbot />
