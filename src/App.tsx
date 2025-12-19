@@ -146,7 +146,7 @@ export default function App() {
   const config = sections[userRole];
 
   return (
-    <div className="min-h-screen overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden bg-slate-950">
       <NepalTheme />
       <ParticleField />
       <CustomCursor />
@@ -168,12 +168,16 @@ export default function App() {
       {config.showBlog && <Blog />}
       {config.showTestimonials && <Testimonials />}
       {config.showVisitorActions && <VisitorActions />}
+      {config.showDevOpsConsole && <DevOpsConsole />}
+      {config.showBackendDatabase && (
+        <div className="px-4 sm:px-6 lg:px-8 py-12">
+          <BackendDatabase />
+        </div>
+      )}
       <Contact />
       <FloatingActions />
       <AIChatbot />
       <EasterEggs />
-      {config.showDevOpsConsole && <DevOpsConsole />}
-      {config.showBackendDatabase && <BackendDatabase />}
     </div>
   );
 }
