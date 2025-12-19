@@ -12,66 +12,82 @@ export function HiringBanner() {
     <motion.div
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1, duration: 0.5 }}
-      className="fixed top-20 left-0 right-0 z-40 pointer-events-none"
+      transition={{ delay: 1.2, duration: 0.5 }}
+      className="fixed top-[72px] left-0 right-0 z-40 pointer-events-none px-4"
     >
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto">
         <motion.div
-          className="relative overflow-hidden rounded-xl backdrop-blur-xl bg-gradient-to-r from-purple-600/90 via-blue-600/90 to-cyan-600/90 border border-white/20 shadow-2xl pointer-events-auto"
-          whileHover={{ scale: 1.01 }}
+          className="relative overflow-hidden rounded-xl backdrop-blur-xl bg-gradient-to-r from-indigo-600/95 via-purple-600/95 to-pink-600/95 border border-white/20 shadow-2xl pointer-events-auto"
+          whileHover={{ y: -2 }}
+          transition={{ duration: 0.2 }}
         >
-          {/* Animated gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-400/20 via-blue-400/20 to-cyan-400/20 animate-pulse" />
+          {/* Animated shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
           
-          <div className="relative p-4">
+          <div className="relative px-4 py-3">
             <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm">
+              {/* Left side - Info */}
+              <div className="flex items-center gap-3 flex-1 min-w-0">
+                <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex-shrink-0 border border-white/30">
                   <Briefcase className="w-5 h-5 text-white" />
                 </div>
-                <div>
-                  <p className="text-white">
+                <div className="min-w-0">
+                  <p className="text-white text-sm font-medium">
                     <span className="hidden sm:inline">👋 Hiring Manager? </span>
-                    <span className="font-semibold">Available for new opportunities!</span>
+                    <span className="font-semibold">Available for Opportunities!</span>
                   </p>
                   <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="text-xs text-white/80 hover:text-white underline transition-colors"
+                    className="text-xs text-white/90 hover:text-white underline underline-offset-2 transition-colors font-medium mt-0.5"
                   >
-                    {isExpanded ? 'Show less' : 'View quick details'}
+                    {isExpanded ? 'Show less ↑' : 'View details ↓'}
                   </button>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              {/* Right side - Actions */}
+              <div className="flex items-center gap-2 flex-shrink-0">
+                {/* Schedule Call Button */}
                 <motion.a
                   href="#contact"
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white text-purple-600 rounded-lg hover:bg-white/90 transition-colors"
+                  className="hidden sm:flex items-center gap-2 px-4 py-2.5 bg-white text-indigo-600 rounded-lg hover:bg-white/95 transition-all shadow-lg font-medium text-sm"
                 >
                   <Calendar className="w-4 h-4" />
                   <span>Schedule Call</span>
                 </motion.a>
 
-                <motion.button
+                {/* Mobile Schedule Button */}
+                <motion.a
+                  href="#contact"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  className="sm:hidden flex items-center gap-1.5 px-3 py-2 bg-white text-indigo-600 rounded-lg hover:bg-white/95 transition-all text-xs font-medium"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Call</span>
+                </motion.a>
+
+                {/* Resume Button */}
+                <motion.button
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => {
-                    // Trigger resume download
                     const link = document.createElement('a');
-                    link.href = '#'; // Replace with actual resume URL
+                    link.href = '#';
                     link.download = 'Resume.pdf';
                     link.click();
                   }}
-                  className="flex items-center gap-2 px-4 py-2 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-colors backdrop-blur-sm"
+                  className="flex items-center gap-2 px-4 py-2.5 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all backdrop-blur-sm border border-white/30 font-medium text-sm"
                 >
                   <Download className="w-4 h-4" />
                   <span className="hidden sm:inline">Resume</span>
                 </motion.button>
 
+                {/* Close Button */}
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.9 }}
                   onClick={() => setIsDismissed(true)}
                   className="p-2 hover:bg-white/10 rounded-lg transition-colors"

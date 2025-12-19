@@ -183,3 +183,32 @@
 html {
   font-size: var(--font-size);
 }
+
+/* Fix overflow and visibility issues */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  position: relative;
+}
+
+/* Prevent horizontal scroll from animations */
+* {
+  max-width: 100%;
+}
+
+/* Shimmer animation for hiring banner */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s infinite;
+}

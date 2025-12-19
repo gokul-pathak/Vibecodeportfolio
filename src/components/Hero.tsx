@@ -1,7 +1,9 @@
-import { ArrowRight, Github, Linkedin, Mail, Sparkles, Code, Layers } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Mail, Sparkles, Code, Layers, MapPin } from 'lucide-react';
 import { motion } from 'motion/react';
 import { AnimatedBackground } from './AnimatedBackground';
 import { useEffect, useState } from 'react';
+import { TypewriterText } from './TypewriterText';
+import { NepalFlag } from './NepalFlag';
 
 export function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -34,37 +36,37 @@ export function Hero() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 px-4 relative overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 px-4 sm:px-6 lg:px-8 overflow-hidden">
       <AnimatedBackground />
       
       {/* Simplified floating orbs */}
       <motion.div
-        className="absolute w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"
+        className="absolute w-64 h-64 sm:w-96 sm:h-96 bg-indigo-500/20 rounded-full blur-3xl pointer-events-none"
         animate={{
-          x: mousePosition.x * 0.02,
-          y: mousePosition.y * 0.02,
+          x: mousePosition.x * 0.01,
+          y: mousePosition.y * 0.01,
         }}
         style={{ top: '20%', left: '10%' }}
       />
       <motion.div
-        className="absolute w-96 h-96 bg-purple-500/20 rounded-full blur-3xl"
+        className="absolute w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"
         animate={{
-          x: mousePosition.x * -0.02,
-          y: mousePosition.y * -0.02,
+          x: mousePosition.x * -0.01,
+          y: mousePosition.y * -0.01,
         }}
         style={{ bottom: '20%', right: '10%' }}
       />
 
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center relative z-10">
+      <div className="w-full max-w-6xl mx-auto grid md:grid-cols-2 gap-8 md:gap-16 items-center relative z-10">
         <motion.div 
-          className="space-y-8"
+          className="space-y-6 sm:space-y-8"
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
           <div className="space-y-4">
             <motion.p 
-              className="text-indigo-300"
+              className="text-indigo-300 flex items-center gap-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -79,21 +81,41 @@ export function Hero() {
             >
               Alex Morgan
             </motion.h1>
-            <motion.div className="h-20 relative">
-              {roles.map((role, index) => (
-                <motion.h2
-                  key={role}
-                  className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 absolute"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{
-                    opacity: currentRole === index ? 1 : 0,
-                    y: currentRole === index ? 0 : 20
-                  }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {role}
-                </motion.h2>
-              ))}
+            
+            {/* Nepal Badge */}
+            <motion.div
+              className="flex items-center gap-3 py-2"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <NepalFlag />
+              <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-red-600/20 to-blue-600/20 backdrop-blur-sm border border-white/10">
+                <MapPin className="w-4 h-4 text-red-400" />
+                <span className="text-sm text-slate-300">Crafted in Nepal 🇳🇵</span>
+              </div>
+            </motion.div>
+            
+            <motion.div 
+              className="h-20 relative"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
+                <TypewriterText
+                  texts={[
+                    'Designer & Developer',
+                    'Frontend Specialist',
+                    'Creative Coder',
+                    'UI/UX Expert',
+                    'From the Himalayas 🏔️'
+                  ]}
+                  typingSpeed={80}
+                  deletingSpeed={40}
+                  pauseDuration={2000}
+                />
+              </h2>
             </motion.div>
           </div>
           

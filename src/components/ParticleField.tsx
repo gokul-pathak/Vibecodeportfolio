@@ -118,10 +118,13 @@ export function ParticleField() {
   }, []);
 
   return (
-    <canvas
+    <motion.canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0 opacity-30"
-      style={{ mixBlendMode: 'screen' }}
+      className="fixed inset-0 pointer-events-none z-0"
+      style={{ width: '100vw', height: '100vh', maxWidth: '100vw' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 0.6 }}
+      transition={{ duration: 2 }}
     />
   );
 }
