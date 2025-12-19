@@ -5,6 +5,7 @@ import { RoleBasedWelcome } from './components/RoleBasedWelcome';
 import { NepalTheme } from './components/NepalTheme';
 import { DevOpsConsole } from './components/DevOpsConsole';
 import { BackendDatabase } from './components/BackendDatabase';
+import { FestivalBanner } from './components/FestivalBanner';
 import { ParticleField } from './components/ParticleField';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgress } from './components/ScrollProgress';
@@ -152,9 +153,10 @@ export default function App() {
       <CustomCursor />
       <ScrollProgress />
       <Navigation />
+      {config.showHiringBanner && <HiringBanner />}
+      <FestivalBanner showHiringBanner={config.showHiringBanner} />
       <RoleIndicator role={userRole} onChangeRole={handleChangeRole} />
       
-      {config.showHiringBanner && <HiringBanner />}
       <Hero />
       <RoleBasedWelcome role={userRole} />
       {config.showAvailabilityStatus && <AvailabilityStatus />}

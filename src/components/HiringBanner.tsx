@@ -13,7 +13,7 @@ export function HiringBanner() {
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ delay: 1.2, duration: 0.5 }}
-      className="fixed top-[72px] left-0 right-0 z-40 pointer-events-none px-4"
+      className="fixed top-[72px] left-0 right-0 z-50 pointer-events-none px-4"
     >
       <div className="max-w-7xl mx-auto">
         <motion.div
