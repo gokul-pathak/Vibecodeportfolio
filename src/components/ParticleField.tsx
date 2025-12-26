@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
+import { prefersReducedMotion, isLowEndDevice } from '../utils/performance';
 
 interface Particle {
   x: number;
@@ -23,38 +24,81 @@ export function ParticleField() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Check if device prefers reduced motion
+    if (prefersReducedMotion()) return;
+
     // Set canvas size
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    
+    // Debounce resize
+    let resizeTimeout: number;
+    const debouncedResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(resizeCanvas, 100);
+    };
+    window.addEventListener('resize', debouncedResize);
 
-    // Initialize particles
-    const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
+    // Reduce particle count significantly for performance
+    const isMobile = window.innerWidth < 768;
+    const isLowEnd = isLowEndDevice();
+    
+    let particleCount: number;
+    if (isLowEnd) {
+      particleCount = Math.min(20, Math.floor((canvas.width * canvas.height) / 50000));
+    } else if (isMobile) {
+      particleCount = Math.min(30, Math.floor((canvas.width * canvas.height) / 40000));
+    } else {
+      particleCount = Math.min(50, Math.floor((canvas.width * canvas.height) / 30000));
+    }
+    
     particlesRef.current = Array.from({ length: particleCount }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      size: Math.random() * 2 + 1,
-      alpha: Math.random() * 0.5 + 0.2,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      size: Math.random() * 1.5 + 0.5,
+      alpha: Math.random() * 0.3 + 0.1,
     }));
 
-    // Track mouse
+    // Throttle mouse tracking
+    let mouseTimeout: number;
     const handleMouseMove = (e: MouseEvent) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY };
+      if (!mouseTimeout) {
+        mouseTimeout = window.setTimeout(() => {
+          mouseRef.current = { x: e.clientX, y: e.clientY };
+          mouseTimeout = 0;
+        }, 50);
+      }
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-    // Animation loop
-    const animate = () => {
+    // Animation loop with performance optimization
+    let lastFrameTime = 0;
+    const fps = 30; // Limit to 30 FPS for better performance
+    const frameInterval = 1000 / fps;
+
+    const animate = (currentTime: number) => {
       if (!ctx || !canvas) return;
+
+      // Throttle to target FPS
+      if (currentTime - lastFrameTime < frameInterval) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+        return;
+      }
+      lastFrameTime = currentTime;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particlesRef.current.forEach((particle, index) => {
+      const particles = particlesRef.current;
+      const particleCount = particles.length;
+
+      for (let i = 0; i < particleCount; i++) {
+        const particle = particles[i];
+        
         // Update position
         particle.x += particle.vx;
         particle.y += particle.vy;
@@ -65,55 +109,60 @@ export function ParticleField() {
         if (particle.y < 0) particle.y = canvas.height;
         if (particle.y > canvas.height) particle.y = 0;
 
-        // Mouse interaction
+        // Simplified mouse interaction (only when mouse is in viewport)
         const dx = mouseRef.current.x - particle.x;
         const dy = mouseRef.current.y - particle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+        const distSq = dx * dx + dy * dy;
         
-        if (distance < 150) {
-          const force = (150 - distance) / 150;
-          particle.vx -= (dx / distance) * force * 0.1;
-          particle.vy -= (dy / distance) * force * 0.1;
+        if (distSq < 22500) { // 150 * 150
+          const dist = Math.sqrt(distSq);
+          const force = (150 - dist) / 150;
+          particle.vx -= (dx / dist) * force * 0.05;
+          particle.vy -= (dy / dist) * force * 0.05;
         }
 
         // Damping
-        particle.vx *= 0.99;
-        particle.vy *= 0.99;
+        particle.vx *= 0.98;
+        particle.vy *= 0.98;
 
         // Draw particle
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(99, 102, 241, ${particle.alpha})`;
-        ctx.fill();
+        ctx.fillRect(particle.x, particle.y, particle.size, particle.size);
 
-        // Draw connections
-        particlesRef.current.slice(index + 1).forEach((other) => {
+        // Reduce connection checks for performance
+        if (isMobile) continue;
+        
+        for (let j = i + 1; j < particleCount; j++) {
+          const other = particles[j];
           const dx = other.x - particle.x;
           const dy = other.y - particle.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+          const distSq = dx * dx + dy * dy;
 
-          if (distance < 100) {
+          if (distSq < 10000) { // 100 * 100
+            const dist = Math.sqrt(distSq);
+            ctx.strokeStyle = `rgba(99, 102, 241, ${(1 - dist / 100) * 0.15})`;
+            ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(other.x, other.y);
-            ctx.strokeStyle = `rgba(99, 102, 241, ${(1 - distance / 100) * 0.2})`;
-            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
-        });
-      });
+        }
+      }
 
       animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationFrameRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
+      window.removeEventListener('resize', debouncedResize);
       window.removeEventListener('mousemove', handleMouseMove);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      if (resizeTimeout) clearTimeout(resizeTimeout);
+      if (mouseTimeout) clearTimeout(mouseTimeout);
     };
   }, []);
 

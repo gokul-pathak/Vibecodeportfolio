@@ -9,12 +9,23 @@ export function Navigation() {
   const progressWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
   useEffect(() => {
+    // Throttle scroll event for better performance
+    let rafId: number;
+    
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 50);
+          rafId = 0;
+        });
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const navItems = ['Home', 'About', 'Projects', 'Blog', 'Contact'];

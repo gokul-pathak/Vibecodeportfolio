@@ -88,37 +88,44 @@ export function EasterEggs() {
       });
     };
 
-    // Track scrolling
+    // Track scrolling (throttled for performance)
+    let rafId: number;
     const handleScroll = () => {
-      const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-      
-      if (scrollPercentage >= 95) {
-        unlockAchievement('explorer');
-      }
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          const scrollPercentage = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+          
+          if (scrollPercentage >= 95) {
+            unlockAchievement('explorer');
+          }
 
-      // Track section visits
-      const sections = document.querySelectorAll('section[id]');
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
-          setVisitedSections(prev => {
-            const newSet = new Set(prev);
-            newSet.add(section.id);
-            
-            // Check speedster achievement
-            if (newSet.size >= 5 && (Date.now() - startTime) < 30000) {
-              unlockAchievement('speedster');
+          // Track section visits
+          const sections = document.querySelectorAll('section[id]');
+          sections.forEach(section => {
+            const rect = section.getBoundingClientRect();
+            if (rect.top < window.innerHeight / 2 && rect.bottom > window.innerHeight / 2) {
+              setVisitedSections(prev => {
+                const newSet = new Set(prev);
+                newSet.add(section.id);
+                
+                // Check speedster achievement
+                if (newSet.size >= 5 && (Date.now() - startTime) < 30000) {
+                  unlockAchievement('speedster');
+                }
+                
+                return newSet;
+              });
             }
-            
-            return newSet;
           });
-        }
-      });
+          
+          rafId = 0;
+        });
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('click', handleClick);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     // Add rainbow animation keyframes
     const style = document.createElement('style');
@@ -134,6 +141,7 @@ export function EasterEggs() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('click', handleClick);
       window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
       document.head.removeChild(style);
     };
   }, [konamiProgress, startTime]);

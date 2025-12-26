@@ -1,32 +1,36 @@
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { RoleSelector, UserRole } from './components/RoleSelector';
 import { RoleIndicator } from './components/RoleIndicator';
-import { RoleBasedWelcome } from './components/RoleBasedWelcome';
-import { NepalTheme } from './components/NepalTheme';
-import { DevOpsConsole } from './components/DevOpsConsole';
-import { BackendDatabase } from './components/BackendDatabase';
-import { FestivalBanner } from './components/FestivalBanner';
 import { ParticleField } from './components/ParticleField';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgress } from './components/ScrollProgress';
 import { Navigation } from './components/Navigation';
-import { HiringBanner } from './components/HiringBanner';
 import { Hero } from './components/Hero';
-import { AvailabilityStatus } from './components/AvailabilityStatus';
-import { CompanySlider } from './components/CompanySlider';
-import { About } from './components/About';
-import { QuickStats } from './components/QuickStats';
-import { InteractiveSkills } from './components/InteractiveSkills';
-import { Projects } from './components/Projects';
-import { InteractiveTimeline } from './components/InteractiveTimeline';
-import { WhyHireMe } from './components/WhyHireMe';
-import { Blog } from './components/Blog';
-import { Testimonials } from './components/Testimonials';
-import { VisitorActions } from './components/VisitorActions';
-import { Contact } from './components/Contact';
-import { FloatingActions } from './components/FloatingActions';
-import { AIChatbot } from './components/AIChatbot';
-import { EasterEggs } from './components/EasterEggs';
+import { LazySection } from './components/LazySection';
+import { LoadingDots } from './components/LoadingSpinner';
+
+// Lazy load heavy components
+const RoleBasedWelcome = lazy(() => import('./components/RoleBasedWelcome').then(m => ({ default: m.RoleBasedWelcome })));
+const NepalTheme = lazy(() => import('./components/NepalTheme').then(m => ({ default: m.NepalTheme })));
+const DevOpsConsole = lazy(() => import('./components/DevOpsConsole').then(m => ({ default: m.DevOpsConsole })));
+const BackendDatabase = lazy(() => import('./components/BackendDatabase').then(m => ({ default: m.BackendDatabase })));
+const FestivalBanner = lazy(() => import('./components/FestivalBanner').then(m => ({ default: m.FestivalBanner })));
+const HiringBanner = lazy(() => import('./components/HiringBanner').then(m => ({ default: m.HiringBanner })));
+const AvailabilityStatus = lazy(() => import('./components/AvailabilityStatus').then(m => ({ default: m.AvailabilityStatus })));
+const CompanySlider = lazy(() => import('./components/CompanySlider').then(m => ({ default: m.CompanySlider })));
+const About = lazy(() => import('./components/About').then(m => ({ default: m.About })));
+const QuickStats = lazy(() => import('./components/QuickStats').then(m => ({ default: m.QuickStats })));
+const InteractiveSkills = lazy(() => import('./components/InteractiveSkills').then(m => ({ default: m.InteractiveSkills })));
+const Projects = lazy(() => import('./components/Projects').then(m => ({ default: m.Projects })));
+const InteractiveTimeline = lazy(() => import('./components/InteractiveTimeline').then(m => ({ default: m.InteractiveTimeline })));
+const WhyHireMe = lazy(() => import('./components/WhyHireMe').then(m => ({ default: m.WhyHireMe })));
+const Blog = lazy(() => import('./components/Blog').then(m => ({ default: m.Blog })));
+const Testimonials = lazy(() => import('./components/Testimonials').then(m => ({ default: m.Testimonials })));
+const VisitorActions = lazy(() => import('./components/VisitorActions').then(m => ({ default: m.VisitorActions })));
+const Contact = lazy(() => import('./components/Contact').then(m => ({ default: m.Contact })));
+const FloatingActions = lazy(() => import('./components/FloatingActions').then(m => ({ default: m.FloatingActions })));
+const AIChatbot = lazy(() => import('./components/AIChatbot').then(m => ({ default: m.AIChatbot })));
+const EasterEggs = lazy(() => import('./components/EasterEggs').then(m => ({ default: m.EasterEggs })));
 
 export default function App() {
   const [userRole, setUserRole] = useState<UserRole>(null);
@@ -149,40 +153,118 @@ export default function App() {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-slate-950">
-      <NepalTheme />
+      <Suspense fallback={null}>
+        <NepalTheme />
+      </Suspense>
       <ParticleField />
       <CustomCursor />
       <ScrollProgress />
       <Navigation />
-      {config.showHiringBanner && !isHiringBannerDismissed && (
-        <HiringBanner onDismiss={() => setIsHiringBannerDismissed(true)} />
-      )}
-      <FestivalBanner showHiringBanner={config.showHiringBanner && !isHiringBannerDismissed} />
+      
+      <Suspense fallback={null}>
+        {config.showHiringBanner && !isHiringBannerDismissed && (
+          <HiringBanner onDismiss={() => setIsHiringBannerDismissed(true)} />
+        )}
+        <FestivalBanner showHiringBanner={config.showHiringBanner && !isHiringBannerDismissed} />
+      </Suspense>
+      
       <RoleIndicator role={userRole} onChangeRole={handleChangeRole} />
       
       <Hero />
-      <RoleBasedWelcome role={userRole} />
-      {config.showAvailabilityStatus && <AvailabilityStatus />}
-      {config.showCompanySlider && <CompanySlider />}
-      {config.showAbout && <About />}
-      {config.showQuickStats && <QuickStats />}
-      {config.showInteractiveSkills && <InteractiveSkills />}
-      {config.showProjects && <Projects />}
-      {config.showInteractiveTimeline && <InteractiveTimeline />}
-      {config.showWhyHireMe && <WhyHireMe />}
-      {config.showBlog && <Blog />}
-      {config.showTestimonials && <Testimonials />}
-      {config.showVisitorActions && <VisitorActions />}
-      {config.showDevOpsConsole && <DevOpsConsole />}
-      {config.showBackendDatabase && (
-        <div className="px-4 sm:px-6 lg:px-8 py-12">
-          <BackendDatabase />
-        </div>
-      )}
-      <Contact />
-      <FloatingActions />
-      <AIChatbot />
-      <EasterEggs />
+      
+      <Suspense fallback={<LoadingDots />}>
+        <RoleBasedWelcome role={userRole} />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingDots />}>
+        {config.showAvailabilityStatus && (
+          <LazySection>
+            <AvailabilityStatus />
+          </LazySection>
+        )}
+        
+        {config.showCompanySlider && (
+          <LazySection>
+            <CompanySlider />
+          </LazySection>
+        )}
+        
+        {config.showAbout && (
+          <LazySection>
+            <About />
+          </LazySection>
+        )}
+        
+        {config.showQuickStats && (
+          <LazySection>
+            <QuickStats />
+          </LazySection>
+        )}
+        
+        {config.showInteractiveSkills && (
+          <LazySection>
+            <InteractiveSkills />
+          </LazySection>
+        )}
+        
+        {config.showProjects && (
+          <LazySection>
+            <Projects />
+          </LazySection>
+        )}
+        
+        {config.showInteractiveTimeline && (
+          <LazySection>
+            <InteractiveTimeline />
+          </LazySection>
+        )}
+        
+        {config.showWhyHireMe && (
+          <LazySection>
+            <WhyHireMe />
+          </LazySection>
+        )}
+        
+        {config.showBlog && (
+          <LazySection>
+            <Blog />
+          </LazySection>
+        )}
+        
+        {config.showTestimonials && (
+          <LazySection>
+            <Testimonials />
+          </LazySection>
+        )}
+        
+        {config.showVisitorActions && (
+          <LazySection>
+            <VisitorActions />
+          </LazySection>
+        )}
+        
+        {config.showDevOpsConsole && (
+          <LazySection>
+            <DevOpsConsole />
+          </LazySection>
+        )}
+        
+        {config.showBackendDatabase && (
+          <LazySection>
+            <div className="px-4 sm:px-6 lg:px-8 py-12">
+              <BackendDatabase />
+            </div>
+          </LazySection>
+        )}
+        
+        <LazySection>
+          <Contact />
+        </LazySection>
+        
+        <FloatingActions />
+        <AIChatbot />
+        <EasterEggs />
+      </Suspense>
     </div>
   );
 }

@@ -12,18 +12,22 @@ export function ScrollProgress() {
   const [milestones, setMilestones] = useState<number[]>([]);
 
   useEffect(() => {
-    // Calculate section milestones
-    const sections = document.querySelectorAll('section[id]');
-    const positions: number[] = [];
-    
-    sections.forEach((section) => {
-      const rect = section.getBoundingClientRect();
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const position = (rect.top + scrollTop) / (document.documentElement.scrollHeight - window.innerHeight);
-      positions.push(position);
-    });
-    
-    setMilestones(positions);
+    // Delay milestone calculation to avoid blocking initial render
+    const timeoutId = setTimeout(() => {
+      const sections = document.querySelectorAll('section[id]');
+      const positions: number[] = [];
+      
+      sections.forEach((section) => {
+        const rect = section.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const position = (rect.top + scrollTop) / (document.documentElement.scrollHeight - window.innerHeight);
+        positions.push(position);
+      });
+      
+      setMilestones(positions);
+    }, 1000);
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (

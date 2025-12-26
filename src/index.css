@@ -1018,6 +1018,14 @@
     max-height: 100vh;
   }
 
+  .min-h-\[100px\] {
+    min-height: 100px;
+  }
+
+  .min-h-\[200px\] {
+    min-height: 200px;
+  }
+
   .min-h-screen {
     min-height: 100vh;
   }
@@ -1678,6 +1686,10 @@
     .border-yellow-500\/30 {
       border-color: color-mix(in oklab, var(--color-yellow-500) 30%, transparent);
     }
+  }
+
+  .border-t-indigo-500 {
+    border-top-color: var(--color-indigo-500);
   }
 
   .border-t-slate-900 {
@@ -4593,7 +4605,32 @@ body {
 }
 
 * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   max-width: 100%;
+}
+
+.motion-safe {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, :before, :after {
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+img {
+  content-visibility: auto;
+}
+
+section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px;
 }
 
 @keyframes shimmer {

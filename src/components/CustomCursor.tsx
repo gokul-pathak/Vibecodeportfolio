@@ -10,8 +10,21 @@ export function CustomCursor() {
   const cursorY = useSpring(mousePosition.y, { stiffness: 500, damping: 28 });
 
   useEffect(() => {
+    // Throttle mouse position updates for better performance
+    let rafId: number;
+    let lastX = 0;
+    let lastY = 0;
+
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      lastX = e.clientX;
+      lastY = e.clientY;
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          setMousePosition({ x: lastX, y: lastY });
+          rafId = 0;
+        });
+      }
     };
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -36,12 +49,15 @@ export function CustomCursor() {
       }
     };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', updateMousePosition, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', updateMousePosition);
       window.removeEventListener('mouseover', handleMouseOver);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
     };
   }, []);
 

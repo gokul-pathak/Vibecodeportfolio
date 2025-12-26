@@ -7,12 +7,23 @@ export function FloatingActions() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
+    // Throttle scroll event for better performance
+    let rafId: number;
+    
     const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 400);
+      if (!rafId) {
+        rafId = requestAnimationFrame(() => {
+          setShowScrollTop(window.scrollY > 400);
+          rafId = 0;
+        });
+      }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const scrollToTop = () => {
